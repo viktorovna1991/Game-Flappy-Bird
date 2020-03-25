@@ -129,7 +129,7 @@ const bird = {
 
     radius: 12,
 
-    gravity: 0.25,
+    gravity: 0.2,
     jump: 4.6,
     speed: 0,
     rotation: 0,
@@ -163,7 +163,7 @@ const bird = {
             this.rotation = 0 * DEGREE;
         } else {
             this.speed += this.gravity;
-            this.y += this.speed;
+            this.y += this.speed * 0.5;
 
             if (this.y + this.h / 2 >= cvs.height - fg.h) {
                 this.y = cvs.height - fg.h - this.h / 2;
@@ -216,6 +216,11 @@ const gameOver = {
     draw: function () {
         if (state.current === state.over) {
             ctx.drawImage(sprite, this.sX, this.sY, this.w, this.h, this.x, this.y, this.w, this.h);
+            ctx.font = "25px Teko";
+            ctx.fillText(score.value, 225, 186);
+            ctx.strokeText(score.value, 225, 186);
+            ctx.fillText(score.best.toString() ? score.best.toString() : 0, 225, 228);
+            ctx.strokeText(score.best.toString() ? score.best.toString() : 0, 225, 228);
         }
     }
 
@@ -238,10 +243,10 @@ const score = {
 
         } else if (state.current === state.over) {
             // SCORE VALUE
-            ctx.font = "25px Teko";
+            ctx.font = "100px Teko";
             ctx.fillText(this.value, 225, 186);
             ctx.strokeText(this.value, 225, 186);
-            // BEST SCORE
+            // BEST SCORE;
             ctx.fillText(this.best.toString(), 225, 228);
             ctx.strokeText(this.best.toString(), 225, 228);
         }
@@ -267,7 +272,7 @@ const pipes = {
 
     w: 53,
     h: 400,
-    gap: 85,
+    gap: 100,
     maxYPos: -150,
     dx: 2,
 
@@ -322,6 +327,7 @@ const pipes = {
                 SCORE_S.play();
                 score.best = Math.max(score.value, score.best);
                 localStorage.setItem("best", score.best.toString());
+                console.log('locF', score.best.toString());
             }
         }
     },
